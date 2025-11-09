@@ -19,7 +19,14 @@ Servidor completo de Minecraft Bedrock Edition versão 1.21+ com painel web de g
 - Android com Termux instalado
 - Pelo menos 2GB de RAM disponível
 - Espaço de armazenamento: ~500MB
-- Conexão com internet
+- Conexão com internet estável
+
+## 📚 Documentação
+
+- **README.md** - Documentação completa (este arquivo)
+- **QUICK_START.md** - Guia rápido para começar
+- **ATERNOS_GUIDE.md** - Como importar mundos do Aternos
+- **TROUBLESHOOTING_DNS.md** - Soluções para problemas de download/DNS
 
 ## 🚀 Instalação
 
@@ -182,6 +189,54 @@ weather clear                # Limpar tempo
 ./install.sh
 ```
 Aguarde a mensagem "Instalação concluída!"
+
+---
+
+### ❌ Erro: "failed: No address associated with hostname"
+
+**Causa:** Problema de DNS no Termux - não consegue resolver nomes de domínio
+
+Este é o erro mais comum e pode acontecer por:
+- DNS do Termux não configurado corretamente
+- Conflito com VPN
+- Problemas com a rede WiFi atual
+
+**Solução Passo a Passo:**
+
+**1️⃣ Corrigir DNS (RECOMENDADO):**
+```bash
+./fix-dns.sh
+```
+
+**2️⃣ Trocar repositório do Termux:**
+```bash
+termux-change-repo
+```
+Escolha um mirror mais próximo (ex: Albatross, Grimler)
+
+**3️⃣ Usar download manual:**
+```bash
+./download-server.sh
+```
+Este script tem mais URLs alternativas e melhor tratamento de erros.
+
+**4️⃣ Se continuar falhando:**
+- Desconecte VPN se estiver usando
+- Troque de rede WiFi
+- Use dados móveis em vez de WiFi
+- Reinicie o Termux completamente
+
+**5️⃣ Download manual no PC (último recurso):**
+1. No PC, baixe: https://www.minecraft.net/en-us/download/server/bedrock
+2. Escolha "Linux (Ubuntu)" version
+3. Transfira o arquivo .zip para o Android
+4. No Termux:
+```bash
+mkdir -p ~/Minecraft-Server-Termux/bedrock-server
+cd ~/Minecraft-Server-Termux/bedrock-server
+unzip ~/caminho/para/bedrock-server.zip
+chmod +x bedrock_server
+```
 
 ---
 

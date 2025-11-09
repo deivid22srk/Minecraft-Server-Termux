@@ -60,11 +60,36 @@ Abra a URL exibida no navegador (ex: `https://xxx.trycloudflare.com`)
 ## ❌ Problemas?
 
 ### Erro: "bedrock_server: No such file or directory"
-**Causa:** Você não executou o `./install.sh` ainda
+**Causa:** Você não executou o `./install.sh` ainda OU o download falhou
 
-**Solução:**
+**Solução 1:** Executar instalação normal
 ```bash
 ./install.sh
+```
+
+**Solução 2:** Se o download falhar (erro de DNS)
+```bash
+./fix-dns.sh
+./download-server.sh
+```
+
+---
+
+### Erro: "failed: No address associated with hostname"
+**Causa:** Problema de DNS no Termux (não consegue resolver nomes)
+
+**Solução Completa:**
+```bash
+# 1. Corrigir DNS
+./fix-dns.sh
+
+# 2. Trocar repositório Termux (escolha mirror mais próximo)
+termux-change-repo
+
+# 3. Tentar download manual
+./download-server.sh
+
+# 4. Se ainda falhar, tente mudar de rede WiFi ou usar dados móveis
 ```
 
 ---
