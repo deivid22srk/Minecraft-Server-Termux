@@ -10,15 +10,33 @@ echo ""
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-echo "[1/5] Atualizando pacotes do Termux..."
+echo "[1/6] Atualizando pacotes do Termux..."
 pkg update -y && pkg upgrade -y
 
 echo ""
-echo "[2/5] Instalando dependências..."
-pkg install -y wget curl unzip nodejs-lts php
+echo "[2/6] Instalando dependências básicas..."
+pkg install -y wget curl unzip nodejs-lts
 
 echo ""
-echo "[3/5] Baixando e instalando PocketMine-MP..."
+echo "[3/6] Instalando ferramentas de compilação para PHP..."
+echo "Isso é necessário para o PocketMine-MP compilar extensões PHP..."
+pkg install -y \
+    php \
+    make \
+    clang \
+    autoconf \
+    automake \
+    libtool \
+    m4 \
+    bison \
+    re2c \
+    pkg-config \
+    cmake \
+    binutils \
+    git
+
+echo ""
+echo "[4/6] Baixando e instalando PocketMine-MP..."
 mkdir -p pocketmine-server
 cd pocketmine-server
 
@@ -31,7 +49,8 @@ echo "✅ Conexão OK"
 
 echo ""
 echo "📦 Instalando PocketMine-MP (servidor nativo ARM64)..."
-echo "Isso pode levar alguns minutos..."
+echo "⏱️  Isso pode levar 10-20 minutos para compilar o PHP..."
+echo "☕ Tome um café enquanto isso... não interrompa o processo!"
 echo ""
 
 if command -v curl &> /dev/null; then
@@ -41,16 +60,28 @@ else
 fi
 
 if [ ! -f "start.sh" ]; then
+    echo ""
     echo "❌ Erro na instalação do PocketMine-MP"
     echo ""
-    echo "Tente instalação manual:"
-    echo "  cd pocketmine-server"
-    echo "  wget -O - https://get.pmmp.io | bash"
+    echo "Verifique os erros acima."
+    echo "Possíveis causas:"
+    echo "  1. Compilação do PHP falhou (falta de memória)"
+    echo "  2. Falta alguma dependência"
+    echo "  3. Espaço em disco insuficiente"
+    echo ""
+    echo "Tente:"
+    echo "  - Fechar outros apps no Android"
+    echo "  - Liberar espaço (mínimo 500MB)"
+    echo "  - Executar ./install.sh novamente"
     exit 1
 fi
 
 chmod +x start.sh
 chmod +x PocketMine-MP.phar 2>/dev/null
+
+if [ -f "bin/php7/bin/php" ]; then
+    chmod +x bin/php7/bin/php
+fi
 
 echo ""
 echo "✅ PocketMine-MP instalado com sucesso!"
@@ -58,14 +89,17 @@ echo "✅ PocketMine-MP instalado com sucesso!"
 cd ..
 
 echo ""
-echo "[4/5] Instalando dependências do painel web..."
+echo "[5/6] Instalando dependências do painel web..."
 cd web-panel
-npm install --silent
+
+if [ ! -d "node_modules" ]; then
+    npm install --silent
+fi
 
 cd ..
 
 echo ""
-echo "[5/5] Configurando scripts..."
+echo "[6/6] Configurando scripts..."
 chmod +x *.sh 2>/dev/null
 
 echo ""

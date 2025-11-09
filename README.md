@@ -67,14 +67,23 @@ chmod +x *.sh
 ./install.sh
 ```
 
-⏱️ **Tempo estimado:** 5-10 minutos
+⏱️ **Tempo estimado:** 15-25 minutos (PHP será compilado automaticamente)
 
 A instalação irá:
 - ✅ Atualizar os pacotes do Termux
+- ✅ Instalar ferramentas de compilação (make, clang, etc.)
 - ✅ Instalar PHP e dependências
 - ✅ Baixar e instalar PocketMine-MP
+- ✅ **Compilar PHP customizado** com extensões necessárias (demora mais)
 - ✅ Configurar o painel web
 - ✅ Instalar o Cloudflare Tunnel
+
+**⚠️ IMPORTANTE:**
+- A compilação do PHP pode demorar **10-20 minutos**
+- Não interrompa o processo!
+- Mantenha o dispositivo plugado na energia
+- Feche outros apps para liberar memória
+- Se der erro de memória, feche mais apps e tente novamente
 
 **⚠️ Aguarde a instalação terminar completamente antes de iniciar o servidor!**
 

@@ -14,13 +14,20 @@ cd Minecraft-Server-Termux
 chmod +x *.sh
 ./install.sh
 ```
-**⏱️ Aguarde 5-10 minutos**
+**⏱️ Aguarde 15-25 minutos** (PHP será compilado)
 
 **O que será instalado:**
+- Ferramentas de compilação (make, clang, gcc, etc.)
 - PocketMine-MP 5.37.0+
-- PHP 8.2+
+- PHP 8.2+ com extensões customizadas
 - Node.js para painel web
 - Cloudflare Tunnel
+
+**⚠️ NÃO INTERROMPA A COMPILAÇÃO DO PHP!**
+- Pode demorar 10-20 minutos
+- Mantenha na energia
+- Feche outros apps
+- Aguarde a mensagem "Instalação concluída!"
 
 ---
 
