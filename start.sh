@@ -8,29 +8,66 @@ echo "  Iniciando Minecraft Bedrock Server"
 echo "=========================================="
 echo ""
 
-if [ ! -d "bedrock-server" ]; then
-    echo "Erro: Servidor não encontrado. Execute ./install.sh primeiro."
+if [ ! -d "bedrock-server" ] || [ ! -f "bedrock-server/bedrock_server" ]; then
+    echo "❌ Erro: Servidor não encontrado ou não instalado."
+    echo ""
+    echo "Execute primeiro:"
+    echo "  ./install.sh"
+    echo ""
     exit 1
 fi
 
-echo "[1/3] Iniciando painel web..."
-cd web-panel
-node server.js &
-WEB_PID=$!
-echo "Painel web iniciado (PID: $WEB_PID)"
-
-cd ..
+echo "[0/4] Limpando processos anteriores..."
+pkill -f "node server.js" 2>/dev/null
+pkill -f "bedrock_server" 2>/dev/null
+pkill -f "cloudflared" 2>/dev/null
 sleep 2
+echo "✅ Processos limpos"
+echo ""
+
+echo "[1/4] Verificando dependências do painel..."
+cd web-panel
+
+if [ ! -d "node_modules" ]; then
+    echo "📦 Instalando dependências do Node.js..."
+    npm install --silent
+    echo "✅ Dependências instaladas"
+fi
 
 echo ""
-echo "[2/3] Iniciando túnel público..."
-./setup-tunnel.sh &
-TUNNEL_PID=$!
+echo "[2/4] Iniciando painel web..."
+node server.js > ../web-panel.log 2>&1 &
+WEB_PID=$!
+echo "✅ Painel web iniciado (PID: $WEB_PID)"
 
+cd ..
 sleep 3
 
 echo ""
-echo "[3/3] Iniciando servidor Minecraft..."
+echo "[3/4] Iniciando túnel público..."
+./setup-tunnel.sh > tunnel-setup.log 2>&1 &
+TUNNEL_PID=$!
+echo "✅ Túnel iniciado (PID: $TUNNEL_PID)"
+
+sleep 5
+
+if [ -f "web-url.txt" ]; then
+    echo ""
+    echo "=========================================="
+    echo "  🌐 URLs PÚBLICAS"
+    echo "=========================================="
+    echo ""
+    WEB_URL=$(cat web-url.txt 2>/dev/null || echo "http://localhost:3000")
+    echo "🌐 Painel Web: $WEB_URL"
+    echo "🎮 Porta Minecraft: 19132"
+    echo ""
+fi
+
+echo ""
+echo "[4/4] Iniciando servidor Minecraft..."
+echo "⚠️  Pressione Ctrl+C para parar o servidor"
+echo "=========================================="
+echo ""
 cd bedrock-server
 
 export LD_LIBRARY_PATH=.

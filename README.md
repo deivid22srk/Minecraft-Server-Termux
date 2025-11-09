@@ -23,6 +23,8 @@ Servidor completo de Minecraft Bedrock Edition versão 1.21+ com painel web de g
 
 ## 🚀 Instalação
 
+### ⚠️ IMPORTANTE: Siga os passos na ordem!
+
 ### 1. Clone o repositório
 
 ```bash
@@ -34,36 +36,58 @@ cd Minecraft-Server-Termux
 ### 2. Dê permissões aos scripts
 
 ```bash
-chmod +x install.sh start.sh setup-tunnel.sh
+chmod +x *.sh
 ```
 
-### 3. Execute a instalação
+### 3. Execute a instalação (OBRIGATÓRIO NA PRIMEIRA VEZ)
 
 ```bash
 ./install.sh
 ```
 
-A instalação irá:
-- Atualizar os pacotes do Termux
-- Instalar todas as dependências necessárias
-- Baixar o servidor Bedrock
-- Configurar o painel web
-- Instalar o Cloudflare Tunnel
+⏱️ **Tempo estimado:** 10-15 minutos
 
-⏱️ **Tempo estimado:** 10-15 minutos (dependendo da conexão)
+A instalação irá:
+- ✅ Atualizar os pacotes do Termux
+- ✅ Instalar todas as dependências necessárias
+- ✅ Baixar o servidor Bedrock
+- ✅ Configurar o painel web
+- ✅ Instalar o Cloudflare Tunnel
+
+**⚠️ Aguarde a instalação terminar completamente antes de iniciar o servidor!**
 
 ## 🎯 Como Usar
 
-### Iniciar o Servidor
+### ✅ Primeiro Uso - Lista de Verificação
+
+Antes de iniciar, certifique-se de:
+- ✅ Executou `./install.sh` e aguardou terminar
+- ✅ Viu a mensagem "Instalação concluída!"
+- ✅ Está no diretório correto (`~/Minecraft-Server-Termux`)
+
+### 🚀 Iniciar o Servidor
 
 ```bash
 ./start.sh
 ```
 
+**⏱️ Aguarde 1-2 minutos** para tudo iniciar completamente.
+
 Este comando irá:
-1. Iniciar o painel web na porta 3000
-2. Configurar os túneis públicos
-3. Iniciar o servidor Minecraft
+1. ✅ Limpar processos antigos
+2. ✅ Verificar dependências
+3. ✅ Iniciar o painel web na porta 3000
+4. ✅ Configurar os túneis públicos
+5. ✅ Iniciar o servidor Minecraft
+
+### 🛑 Parar o Servidor
+
+**Opção 1:** Pressione `Ctrl+C` no terminal do servidor
+
+**Opção 2:** Execute em outro terminal:
+```bash
+./stop.sh
+```
 
 ### Acessar o Painel Web
 
@@ -149,55 +173,161 @@ weather clear                # Limpar tempo
 
 ## 🔧 Solução de Problemas
 
-### O servidor não inicia
+### ❌ Erro: "bedrock_server: No such file or directory"
 
+**Causa:** Servidor não foi instalado ou instalação incompleta
+
+**Solução:**
 ```bash
-cd bedrock-server
-export LD_LIBRARY_PATH=.
-./bedrock_server
+./install.sh
 ```
+Aguarde a mensagem "Instalação concluída!"
 
-Verifique os erros no console.
+---
 
-### Porta já em uso
+### ❌ Erro: "Port 3000 already in use"
 
-Edite `bedrock-server/server.properties` e mude a porta:
+**Causa:** Processo anterior ainda está rodando na porta 3000
 
-```
-server-port=19133
-server-portv6=19133
-```
-
-### Túnel não conecta
-
-Reinstale o cloudflared:
-
+**Solução:**
 ```bash
-rm $PREFIX/bin/cloudflared
+./stop.sh
+sleep 3
+./start.sh
+```
+
+Ou manualmente:
+```bash
+pkill -f "node server.js"
+pkill -f bedrock_server
+pkill -f cloudflared
+./start.sh
+```
+
+---
+
+### ❌ URLs públicas não aparecem
+
+**Causa:** Cloudflare Tunnel ainda está conectando
+
+**Solução 1:** Aguarde 1-2 minutos
+
+**Solução 2:** Verifique os arquivos:
+```bash
+cat web-url.txt
+cat mc-url.txt
+```
+
+**Solução 3:** Reinicie o túnel:
+```bash
+pkill -f cloudflared
 ./setup-tunnel.sh
 ```
 
-### Mundo não importa
+---
 
-Certifique-se de que:
-- O arquivo está em formato `.zip` ou `.mcworld`
-- O servidor está parado durante a importação
-- Há espaço suficiente em disco
+### ❌ Painel web não abre
 
-### Painel web não abre
+**Causa 1:** Dependências do Node.js não instaladas
 
-Verifique se o Node.js está instalado:
-
-```bash
-node --version
-npm --version
-```
-
-Reinstale as dependências:
-
+**Solução:**
 ```bash
 cd web-panel
 npm install
+cd ..
+./start.sh
+```
+
+**Causa 2:** Porta 3000 bloqueada
+
+**Solução:**
+```bash
+./stop.sh
+./start.sh
+```
+
+---
+
+### ❌ Não consigo conectar no Minecraft
+
+**Verificações:**
+1. ✅ Servidor está rodando? (veja logs no console)
+2. ✅ Aguardou 2 minutos após iniciar?
+3. ✅ Porta correta? (deve ser 19132)
+4. ✅ Endereço correto? (copie do painel web)
+
+**Solução:**
+```bash
+./stop.sh
+sleep 5
+./start.sh
+```
+
+Aguarde a mensagem com as URLs públicas.
+
+---
+
+### ❌ Servidor fecha sozinho
+
+**Causa:** Memória insuficiente ou erro no servidor
+
+**Solução:** Verifique os logs:
+```bash
+cat bedrock-server/logs/latest.log
+```
+
+Se for falta de memória:
+- Feche outros apps no Android
+- Reduza a distância de renderização no painel
+- Reduza o máximo de jogadores
+
+---
+
+### ❌ Mundo não importa do Aternos
+
+**Verificações:**
+1. ✅ Arquivo é .zip ou .mcworld?
+2. ✅ Servidor está parado?
+3. ✅ Tem espaço em disco?
+
+**Solução:**
+```bash
+./stop.sh
+```
+
+Depois importe pelo painel web.
+
+Verifique erros:
+```bash
+tail -f web-panel.log
+```
+
+---
+
+### ❌ Game Rules não aplicam
+
+**Causa:** Servidor não está rodando
+
+**Solução:**
+Game rules só podem ser aplicadas com servidor RODANDO!
+
+1. Certifique-se que o status é "Rodando"
+2. Configure as opções
+3. Clique em "Aplicar Game Rules"
+
+---
+
+### 🔄 Reinstalação Limpa
+
+Se nada funcionar, reinstale tudo:
+
+```bash
+cd ~
+rm -rf Minecraft-Server-Termux
+git clone https://github.com/deivid22srk/Minecraft-Server-Termux.git
+cd Minecraft-Server-Termux
+chmod +x *.sh
+./install.sh
 ```
 
 ## 📂 Estrutura do Projeto
