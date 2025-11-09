@@ -18,8 +18,9 @@ const io = socketIo(server, {
 });
 
 const PORT = 3000;
-const BEDROCK_DIR = path.join(__dirname, '..', 'bedrock-server');
-const WORLDS_DIR = path.join(BEDROCK_DIR, 'worlds');
+const SERVER_DIR = path.join(__dirname, '..', 'pocketmine-server');
+const WORLDS_DIR = path.join(SERVER_DIR, 'worlds');
+const PLUGINS_DIR = path.join(SERVER_DIR, 'plugins');
 
 app.use(cors());
 app.use(express.json());
@@ -32,7 +33,7 @@ let serverStatus = 'stopped';
 let serverLogs = [];
 
 function readServerProperties() {
-    const propsPath = path.join(BEDROCK_DIR, 'server.properties');
+    const propsPath = path.join(SERVER_DIR, 'server.properties');
     if (!fs.existsSync(propsPath)) return {};
     
     const content = fs.readFileSync(propsPath, 'utf8');
@@ -52,7 +53,7 @@ function readServerProperties() {
 }
 
 function writeServerProperties(props) {
-    const propsPath = path.join(BEDROCK_DIR, 'server.properties');
+    const propsPath = path.join(SERVER_DIR, 'server.properties');
     let content = '';
     
     for (const [key, value] of Object.entries(props)) {
@@ -63,15 +64,20 @@ function writeServerProperties(props) {
 }
 
 function readWorldOptions() {
-    const optionsPath = path.join(BEDROCK_DIR, 'worlds', 'Bedrock level', 'levelname.txt');
-    const worldName = fs.existsSync(optionsPath) ? fs.readFileSync(optionsPath, 'utf8').trim() : 'Bedrock level';
+    const worldsPath = WORLDS_DIR;
     
-    const worldPath = path.join(BEDROCK_DIR, 'worlds', worldName);
-    const levelDatPath = path.join(worldPath, 'level.dat');
+    if (!fs.existsSync(worldsPath)) {
+        return { worldName: 'world', exists: false };
+    }
+    
+    const worlds = fs.readdirSync(worldsPath).filter(f => {
+        return fs.statSync(path.join(worldsPath, f)).isDirectory();
+    });
     
     return {
-        worldName,
-        exists: fs.existsSync(worldPath)
+        worldName: worlds.length > 0 ? worlds[0] : 'world',
+        exists: worlds.length > 0,
+        worlds: worlds
     };
 }
 
@@ -92,9 +98,9 @@ app.post('/api/start', (req, res) => {
         return res.json({ success: false, message: 'Servidor já está rodando' });
     }
     
-    serverProcess = spawn('./bedrock_server', [], {
-        cwd: BEDROCK_DIR,
-        env: { ...process.env, LD_LIBRARY_PATH: BEDROCK_DIR }
+    serverProcess = spawn('./start.sh', [], {
+        cwd: SERVER_DIR,
+        shell: true
     });
     
     serverStatus = 'running';
@@ -150,7 +156,10 @@ app.post('/api/restart', (req, res) => {
         }, 5000);
         
         setTimeout(() => {
-            exec('cd ' + BEDROCK_DIR + ' && ./bedrock_server');
+            serverProcess = spawn('./start.sh', [], {
+                cwd: SERVER_DIR,
+                shell: true
+            });
         }, 6000);
     }
     

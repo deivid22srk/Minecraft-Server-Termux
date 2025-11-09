@@ -6,6 +6,7 @@ cd "$SCRIPT_DIR"
 show_menu() {
     echo "=========================================="
     echo "  Minecraft Bedrock Server - Menu"
+    echo "  PocketMine-MP (ARM64)"
     echo "=========================================="
     echo ""
     echo "1. Iniciar servidor"
@@ -16,7 +17,7 @@ show_menu() {
     echo "6. Backup do mundo"
     echo "7. Restaurar backup"
     echo "8. Limpar logs"
-    echo "9. Atualizar servidor"
+    echo "9. Atualizar PocketMine-MP"
     echo "0. Sair"
     echo ""
     echo -n "Escolha uma opção: "
@@ -29,15 +30,16 @@ start_server() {
 
 stop_server() {
     echo "Parando servidor..."
-    pkill -f bedrock_server
+    pkill -f PocketMine-MP
+    pkill -f "php.*phar"
     pkill -f "node server.js"
     pkill -f cloudflared
     echo "Servidor parado."
 }
 
 view_logs() {
-    if [ -f "bedrock-server/logs/latest.log" ]; then
-        tail -f bedrock-server/logs/latest.log
+    if [ -f "pocketmine-server/server.log" ]; then
+        tail -f pocketmine-server/server.log
     else
         echo "Nenhum log encontrado."
     fi
@@ -76,8 +78,9 @@ backup_world() {
     BACKUP_DIR="backups/$(date +%Y%m%d_%H%M%S)"
     mkdir -p "$BACKUP_DIR"
     
-    if [ -d "bedrock-server/worlds" ]; then
-        cp -r bedrock-server/worlds "$BACKUP_DIR/"
+    if [ -d "pocketmine-server/worlds" ]; then
+        cp -r pocketmine-server/worlds "$BACKUP_DIR/"
+        cp -r pocketmine-server/players "$BACKUP_DIR/" 2>/dev/null
         echo "✅ Backup criado em: $BACKUP_DIR"
     else
         echo "❌ Nenhum mundo encontrado para backup."
@@ -94,8 +97,10 @@ restore_backup() {
     
     if [ -d "backups/$BACKUP_NAME" ]; then
         echo "Restaurando backup..."
-        rm -rf bedrock-server/worlds
-        cp -r "backups/$BACKUP_NAME/worlds" bedrock-server/
+        rm -rf pocketmine-server/worlds
+        rm -rf pocketmine-server/players
+        cp -r "backups/$BACKUP_NAME/worlds" pocketmine-server/
+        cp -r "backups/$BACKUP_NAME/players" pocketmine-server/ 2>/dev/null
         echo "✅ Backup restaurado com sucesso!"
     else
         echo "❌ Backup não encontrado."
@@ -105,20 +110,27 @@ restore_backup() {
 clean_logs() {
     echo "Limpando logs..."
     rm -f *.log
-    rm -f bedrock-server/logs/*.log
+    rm -f pocketmine-server/*.log
     echo "✅ Logs limpos."
 }
 
 update_server() {
-    echo "Atualizando servidor..."
-    echo "⚠️  Esta operação irá parar o servidor atual."
+    echo "Atualizando PocketMine-MP..."
+    echo "⚠️  Esta operação irá atualizar o servidor para a versão mais recente."
     echo -n "Continuar? (s/n): "
     read CONFIRM
     
     if [ "$CONFIRM" = "s" ] || [ "$CONFIRM" = "S" ]; then
+        echo "Parando servidor..."
         stop_server
         sleep 2
-        ./install.sh
+        
+        echo "Atualizando..."
+        cd pocketmine-server
+        curl -sL https://get.pmmp.io | bash -s -
+        cd ..
+        
+        echo "✅ Atualização concluída!"
     else
         echo "Atualização cancelada."
     fi
@@ -142,7 +154,6 @@ while true; do
         0) echo "Até logo!"; exit 0 ;;
         *) echo "Opção inválida!" ;;
     esac
-    
     echo ""
     echo -n "Pressione ENTER para continuar..."
     read

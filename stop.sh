@@ -8,7 +8,8 @@ echo ""
 echo "🛑 Encerrando processos..."
 
 echo "  - Parando servidor Minecraft..."
-pkill -f bedrock_server 2>/dev/null
+pkill -f PocketMine-MP 2>/dev/null
+pkill -f "php.*phar" 2>/dev/null
 
 echo "  - Parando painel web..."
 pkill -f "node server.js" 2>/dev/null

@@ -5,10 +5,11 @@ cd "$SCRIPT_DIR"
 
 echo "=========================================="
 echo "  Iniciando Minecraft Bedrock Server"
+echo "  PocketMine-MP (ARM64 Nativo)"
 echo "=========================================="
 echo ""
 
-if [ ! -d "bedrock-server" ] || [ ! -f "bedrock-server/bedrock_server" ]; then
+if [ ! -d "pocketmine-server" ] || [ ! -f "pocketmine-server/start.sh" ]; then
     echo "❌ Erro: Servidor não encontrado ou não instalado."
     echo ""
     echo "Execute primeiro:"
@@ -64,14 +65,13 @@ if [ -f "web-url.txt" ]; then
 fi
 
 echo ""
-echo "[4/4] Iniciando servidor Minecraft..."
+echo "[4/4] Iniciando servidor Minecraft PocketMine-MP..."
 echo "⚠️  Pressione Ctrl+C para parar o servidor"
 echo "=========================================="
 echo ""
-cd bedrock-server
+cd pocketmine-server
 
-export LD_LIBRARY_PATH=.
-./bedrock_server
+./start.sh
 
 echo ""
 echo "Encerrando processos..."
