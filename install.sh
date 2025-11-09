@@ -32,9 +32,9 @@ echo "Isso pode levar alguns minutos dependendo da conexão."
 echo ""
 
 BEDROCK_URLS=(
-    "https://minecraft.azureedge.net/bin-linux/bedrock-server-1.21.50.07.zip"
-    "https://minecraft.azureedge.net/bin-linux/bedrock-server-1.21.44.01.zip"
-    "https://minecraft.azureedge.net/bin-linux/bedrock-server-1.21.30.03.zip"
+    "https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.121.1.zip"
+    "https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.50.07.zip"
+    "https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.44.01.zip"
 )
 
 DOWNLOAD_SUCCESS=false

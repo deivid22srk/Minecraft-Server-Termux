@@ -5,7 +5,7 @@
 Se você viu este erro durante `./install.sh`:
 ```
 failed: No address associated with hostname
-wget: unable to resolve host address 'minecraft.azureedge.net'
+wget: unable to resolve host address 'minecraft.net'
 ```
 
 **Isso significa:** O Termux não consegue resolver nomes de domínio (problema de DNS).
@@ -157,19 +157,25 @@ ping -c 3 google.com
 - ✅ Se funcionar: DNS está OK
 - ❌ Se falhar: Problema de DNS (use `./fix-dns.sh`)
 
-### Teste 3: Acesso ao servidor Microsoft
+### Teste 3: Acesso ao servidor Minecraft
 ```bash
-ping -c 3 minecraft.azureedge.net
+ping -c 3 minecraft.net
 ```
 - ✅ Se funcionar: Acesso OK ao servidor
 - ❌ Se falhar: Problema específico com DNS ou bloqueio
 
 ### Teste 4: Download direto
 ```bash
-wget --spider https://minecraft.azureedge.net/bin-linux/bedrock-server-1.21.44.01.zip
+wget --spider https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.121.1.zip
 ```
 - ✅ Se mostrar "200 OK": Servidor acessível
 - ❌ Se falhar: Use download manual ou troque de rede
+
+### Teste 5: Script Automático (RECOMENDADO)
+```bash
+./test-download.sh
+```
+Este script testa tudo automaticamente e informa se está tudo OK!
 
 ---
 

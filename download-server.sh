@@ -36,9 +36,9 @@ fi
 echo ""
 echo "🔍 URLs de Download Disponíveis:"
 echo ""
-echo "1. Versão 1.21.50.07 (Mais recente)"
-echo "2. Versão 1.21.44.01 (Estável)"
-echo "3. Versão 1.21.30.03 (Compatível)"
+echo "1. Versão 1.21.121.1 (Mais recente - Nov 2025)"
+echo "2. Versão 1.21.50.07 (Estável)"
+echo "3. Versão 1.21.44.01 (Compatível)"
 echo "4. Tentar todas automaticamente"
 echo ""
 echo -n "Escolha uma opção (1-4) [4]: "
@@ -48,19 +48,19 @@ CHOICE=${CHOICE:-4}
 
 case $CHOICE in
     1)
-        URLS=("https://minecraft.azureedge.net/bin-linux/bedrock-server-1.21.50.07.zip")
+        URLS=("https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.121.1.zip")
         ;;
     2)
-        URLS=("https://minecraft.azureedge.net/bin-linux/bedrock-server-1.21.44.01.zip")
+        URLS=("https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.50.07.zip")
         ;;
     3)
-        URLS=("https://minecraft.azureedge.net/bin-linux/bedrock-server-1.21.30.03.zip")
+        URLS=("https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.44.01.zip")
         ;;
     4)
         URLS=(
-            "https://minecraft.azureedge.net/bin-linux/bedrock-server-1.21.50.07.zip"
-            "https://minecraft.azureedge.net/bin-linux/bedrock-server-1.21.44.01.zip"
-            "https://minecraft.azureedge.net/bin-linux/bedrock-server-1.21.30.03.zip"
+            "https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.121.1.zip"
+            "https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.50.07.zip"
+            "https://www.minecraft.net/bedrockdedicatedserver/bin-linux/bedrock-server-1.21.44.01.zip"
         )
         ;;
     *)

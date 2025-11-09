@@ -2,13 +2,26 @@
 
 ## ⚡ Setup em 3 Passos
 
-### 1️⃣ Instalar (Primeira vez apenas)
+### 0️⃣ Testar Conexão (OPCIONAL mas recomendado)
 ```bash
 cd Minecraft-Server-Termux
 chmod +x *.sh
+./test-download.sh
+```
+**Se tudo estiver OK, prossiga para o passo 1!**
+
+---
+
+### 1️⃣ Instalar (Primeira vez apenas)
+```bash
 ./install.sh
 ```
 **⏱️ Aguarde 10-15 minutos**
+
+**Download do servidor:**
+- Versão oficial: 1.21.121.1
+- Fonte: minecraft.net
+- Tamanho: ~60-80MB
 
 ---
 
