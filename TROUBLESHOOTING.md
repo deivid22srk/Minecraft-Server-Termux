@@ -19,17 +19,68 @@
 
 ## 🔍 Problemas Comuns
 
-### ❌ Erro: "PHP not found"
+### ❌ Erro: "Please install make/autoconf/automake..."
 
-**Causa:** PHP não está instalado
+**Causa:** Ferramentas de compilação não instaladas
 
-**Solução:**
+**Solução:** O script install.sh já instala tudo, mas se aparecer esse erro:
 ```bash
-pkg install php
-php -v
+pkg install -y make clang autoconf automake libtool m4 bison re2c pkg-config cmake binutils git
 ```
 
-Deve mostrar PHP 8.2 ou superior.
+Depois reinstale:
+```bash
+cd ~/Minecraft-Server-Termux
+./install.sh
+```
+
+---
+
+### ❌ Erro: "Unable to find extensions (chunkutils2, crypto, etc.)"
+
+**Causa:** PHP do Termux não tem as extensões necessárias. PocketMine precisa compilar um PHP customizado.
+
+**Solução:** Execute a instalação completa que agora compila o PHP:
+```bash
+./install.sh
+```
+
+**⏱️ Aguarde 15-25 minutos** para a compilação do PHP completar.
+
+**Se falhar por falta de memória:**
+1. Feche TODOS os outros apps no Android
+2. Reinicie o Termux
+3. Execute novamente: `./install.sh`
+4. Não use o celular durante a compilação
+
+---
+
+### ❌ Compilação do PHP trava ou falha
+
+**Causa:** Memória insuficiente durante compilação
+
+**Soluções:**
+
+**1. Liberar memória:**
+- Feche todos os apps
+- Limpe cache do sistema
+- Reinicie o dispositivo
+
+**2. Tentar novamente:**
+```bash
+cd ~/Minecraft-Server-Termux
+rm -rf pocketmine-server
+./install.sh
+```
+
+**3. Usar proot (alternativa):**
+```bash
+pkg install proot-distro
+proot-distro install ubuntu
+proot-distro login ubuntu
+```
+
+Depois instale no Ubuntu dentro do proot.
 
 ---
 
