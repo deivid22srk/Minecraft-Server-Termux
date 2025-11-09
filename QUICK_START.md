@@ -1,27 +1,26 @@
 # 🚀 GUIA RÁPIDO DE INÍCIO
 
-## ⚡ Setup em 3 Passos
+## 🎯 Sistema: PocketMine-MP (Nativo ARM64)
 
-### 0️⃣ Testar Conexão (OPCIONAL mas recomendado)
-```bash
-cd Minecraft-Server-Termux
-chmod +x *.sh
-./test-download.sh
-```
-**Se tudo estiver OK, prossiga para o passo 1!**
+Este servidor usa **PocketMine-MP** que roda **nativamente** em dispositivos ARM64 (Android) sem emulação!
 
 ---
 
+## ⚡ Setup em 3 Passos
+
 ### 1️⃣ Instalar (Primeira vez apenas)
 ```bash
+cd Minecraft-Server-Termux
+chmod +x *.sh
 ./install.sh
 ```
-**⏱️ Aguarde 10-15 minutos**
+**⏱️ Aguarde 5-10 minutos**
 
-**Download do servidor:**
-- Versão oficial: 1.21.121.1
-- Fonte: minecraft.net
-- Tamanho: ~60-80MB
+**O que será instalado:**
+- PocketMine-MP 5.37.0+
+- PHP 8.2+
+- Node.js para painel web
+- Cloudflare Tunnel
 
 ---
 
@@ -48,6 +47,17 @@ Abra a URL exibida no navegador (ex: `https://xxx.trycloudflare.com`)
 
 ---
 
+## 🎮 Conectar no Minecraft
+
+1. Abra **Minecraft Bedrock Edition** (versão 1.21.120+)
+2. Vá em **Jogar** → **Servidores** → **Adicionar Servidor**
+3. Use as informações:
+   - **Nome:** Qualquer nome
+   - **Endereço:** (pegar no painel web)
+   - **Porta:** `19132`
+
+---
+
 ## 🛑 Parar Servidor
 
 **Opção 1:** Pressione `Ctrl+C` no terminal
@@ -59,57 +69,19 @@ Abra a URL exibida no navegador (ex: `https://xxx.trycloudflare.com`)
 
 ---
 
-## 🎮 Conectar no Minecraft
-
-1. Abra **Minecraft Bedrock Edition**
-2. Vá em **Jogar** → **Servidores** → **Adicionar Servidor**
-3. Use as informações:
-   - **Nome:** Qualquer nome
-   - **Endereço:** (pegar no painel web ou logs)
-   - **Porta:** `19132`
-
----
-
 ## ❌ Problemas?
 
-### Erro: "bedrock_server: No such file or directory"
-**Causa:** Você não executou o `./install.sh` ainda OU o download falhou
+### Erro: "Servidor não encontrado"
+**Causa:** Você não executou o `./install.sh` ainda
 
-**Solução 1:** Executar instalação normal
+**Solução:**
 ```bash
 ./install.sh
-```
-
-**Solução 2:** Se o download falhar (erro de DNS)
-```bash
-./fix-dns.sh
-./download-server.sh
-```
-
----
-
-### Erro: "failed: No address associated with hostname"
-**Causa:** Problema de DNS no Termux (não consegue resolver nomes)
-
-**Solução Completa:**
-```bash
-# 1. Corrigir DNS
-./fix-dns.sh
-
-# 2. Trocar repositório Termux (escolha mirror mais próximo)
-termux-change-repo
-
-# 3. Tentar download manual
-./download-server.sh
-
-# 4. Se ainda falhar, tente mudar de rede WiFi ou usar dados móveis
 ```
 
 ---
 
 ### Erro: "Port 3000 already in use"
-**Causa:** O servidor anterior não foi fechado corretamente
-
 **Solução:**
 ```bash
 ./stop.sh
@@ -119,12 +91,8 @@ sleep 3
 
 ---
 
-### Servidor não aparece URLs públicas
-**Causa:** O túnel ainda está conectando
-
-**Solução:**
-- Aguarde mais 1-2 minutos
-- Verifique o arquivo `web-url.txt`
+### Servidor não mostra URLs públicas
+**Solução:** Aguarde mais 1-2 minutos ou verifique:
 ```bash
 cat web-url.txt
 ```
@@ -132,29 +100,11 @@ cat web-url.txt
 ---
 
 ### Não consigo me conectar no Minecraft
-**Causas possíveis:**
-1. Servidor ainda está iniciando (aguarde 2 minutos)
-2. Porta incorreta (use 19132)
-3. Túnel não conectou (reinicie)
-
-**Solução:**
-```bash
-./stop.sh
-sleep 5
-./start.sh
-```
-
----
-
-## 📋 Comandos Úteis
-
-```bash
-./help.sh          # Ver este guia
-./start.sh         # Iniciar servidor
-./stop.sh          # Parar servidor
-./commands.sh      # Menu interativo
-./install.sh       # Reinstalar/atualizar
-```
+**Soluções:**
+1. Aguarde 2 minutos após iniciar
+2. Use porta 19132
+3. Verifique se sua versão do Minecraft é 1.21.120 ou próxima
+4. Reinicie: `./stop.sh && ./start.sh`
 
 ---
 
@@ -182,24 +132,57 @@ sleep 5
 7. Aguarde a conclusão
 8. Inicie o servidor: `./start.sh`
 
-**📖 Ver guia completo:** `ATERNOS_GUIDE.md`
+---
+
+## 🔌 Instalar Plugins
+
+1. Visite [Poggit](https://poggit.pmmp.io/)
+2. Baixe plugins `.phar`
+3. Via painel web ou Termux:
+```bash
+cp plugin.phar ~/Minecraft-Server-Termux/pocketmine-server/plugins/
+```
+4. Reinicie o servidor
 
 ---
 
 ## 🔧 Manutenção
 
-### Fazer Backup do Mundo
+### Fazer Backup
 No painel web → **"💾 Baixar Mundo Atual"**
 
 ### Ver Logs
 ```bash
-tail -f bedrock-server/logs/latest.log
+tail -f pocketmine-server/server.log
 ```
 
-### Verificar Processos
+### Atualizar PocketMine-MP
 ```bash
-ps aux | grep -E 'bedrock|node|cloudflared'
+cd pocketmine-server
+curl -sL https://get.pmmp.io | bash -s -
 ```
+
+---
+
+## 📋 Comandos Úteis
+
+```bash
+./help.sh          # Ver este guia
+./start.sh         # Iniciar servidor
+./stop.sh          # Parar servidor
+./commands.sh      # Menu interativo
+./install.sh       # Reinstalar/atualizar
+```
+
+---
+
+## 💡 Vantagens do PocketMine-MP
+
+✅ **Nativo ARM64** - Performance superior  
+✅ **Sem emulação** - Mais estável e rápido  
+✅ **Plugins** - Extensível com milhares de plugins  
+✅ **Compatível** - Funciona com Bedrock oficial  
+✅ **Leve** - Usa menos recursos que servidor oficial  
 
 ---
 
@@ -213,3 +196,5 @@ ps aux | grep -E 'bedrock|node|cloudflared'
 ---
 
 **🎮 Divirta-se jogando!** ✨
+
+**Compatível com Minecraft Bedrock 1.21.120+**

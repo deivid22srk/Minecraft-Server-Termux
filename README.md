@@ -1,10 +1,23 @@
 # 🎮 Minecraft Bedrock Server para Termux
 
-Servidor completo de Minecraft Bedrock Edition versão 1.21+ com painel web de gerenciamento, acesso público via túnel e importação de mundos do Aternos.
+Servidor completo de Minecraft Bedrock Edition usando **PocketMine-MP** (nativo ARM64) com painel web de gerenciamento, acesso público via túnel e importação de mundos do Aternos.
+
+## ⚡ Por que PocketMine-MP?
+
+Este projeto usa **PocketMine-MP** em vez do servidor oficial da Minecraft porque:
+
+- ✅ **Nativo em ARM64** - Roda perfeitamente em dispositivos Android sem emulação
+- ✅ **Performance Superior** - Muito mais rápido que emuladores (Box64, QEMU)
+- ✅ **Compatível** - Suporta Minecraft Bedrock 1.21.120+
+- ✅ **Open Source** - Código aberto e constantemente atualizado
+- ✅ **Plugins** - Extensível com milhares de plugins disponíveis
+- ✅ **Estável** - Usado por milhões de servidores ao redor do mundo
+
+> ⚠️ **Nota:** O servidor oficial Bedrock da Microsoft só funciona em x86_64 (Intel/AMD). Em dispositivos ARM (Android), você precisaria de emulação que é lenta e instável. PocketMine-MP resolve isso!
 
 ## ✨ Características
 
-- ✅ Servidor Minecraft Bedrock Edition 1.21.121.1 otimizado para Termux
+- ✅ Servidor Minecraft Bedrock 1.21.120+ nativo ARM64
 - 🌐 Painel web completo para gerenciamento
 - 🔓 Acesso público via Cloudflare Tunnel (não é localhost!)
 - 📥 Importação de mundos do Aternos
@@ -13,22 +26,22 @@ Servidor completo de Minecraft Bedrock Edition versão 1.21+ com painel web de g
 - 📊 Controle total do servidor (iniciar, parar, reiniciar)
 - 🎯 Game rules configuráveis pela interface
 - 💾 Backup e download de mundos
-- 🔄 Download de múltiplas versões do servidor
-- 🧪 Scripts de teste e diagnóstico incluídos
+- 🔌 Suporte a plugins PocketMine-MP
 
 ## 📋 Requisitos
 
 - Android com Termux instalado
 - Pelo menos 2GB de RAM disponível
-- Espaço de armazenamento: ~500MB
+- Espaço de armazenamento: ~300MB
 - Conexão com internet estável
+- **Qualquer dispositivo ARM64** (maioria dos Androids modernos)
 
 ## 📚 Documentação
 
 - **README.md** - Documentação completa (este arquivo)
 - **QUICK_START.md** - Guia rápido para começar
 - **ATERNOS_GUIDE.md** - Como importar mundos do Aternos
-- **TROUBLESHOOTING_DNS.md** - Soluções para problemas de download/DNS
+- **TROUBLESHOOTING.md** - Soluções para problemas comuns
 
 ## 🚀 Instalação
 
@@ -54,12 +67,12 @@ chmod +x *.sh
 ./install.sh
 ```
 
-⏱️ **Tempo estimado:** 10-15 minutos
+⏱️ **Tempo estimado:** 5-10 minutos
 
 A instalação irá:
 - ✅ Atualizar os pacotes do Termux
-- ✅ Instalar todas as dependências necessárias
-- ✅ Baixar o servidor Bedrock
+- ✅ Instalar PHP e dependências
+- ✅ Baixar e instalar PocketMine-MP
 - ✅ Configurar o painel web
 - ✅ Instalar o Cloudflare Tunnel
 
@@ -87,7 +100,7 @@ Este comando irá:
 2. ✅ Verificar dependências
 3. ✅ Iniciar o painel web na porta 3000
 4. ✅ Configurar os túneis públicos
-5. ✅ Iniciar o servidor Minecraft
+5. ✅ Iniciar o servidor PocketMine-MP
 
 ### 🛑 Parar o Servidor
 
@@ -104,7 +117,7 @@ Após iniciar, você verá as URLs públicas no console:
 
 ```
 🌐 Painel Web: https://xxx.trycloudflare.com
-🎮 Servidor Minecraft: https://yyy.trycloudflare.com
+🎮 Servidor Minecraft: porta 19132
 ```
 
 **Acesse o painel web pelo navegador usando a URL exibida!**
@@ -120,22 +133,26 @@ Após iniciar, você verá as URLs públicas no console:
 
 ## 📥 Importar Mundo do Aternos
 
-### Passo 1: Baixar o mundo do Aternos
+### Compatibilidade
 
-1. Acesse seu servidor no [Aternos](https://aternos.org)
-2. Vá em **"Worlds"** (Mundos)
-3. Selecione o mundo que deseja exportar
-4. Clique em **"Download"** (Baixar)
-5. Salve o arquivo `.zip` ou `.mcworld`
+⚠️ **Mundos do Aternos são compatíveis**, mas considere:
 
-### Passo 2: Importar no painel web
+- ✅ Mundos pequenos e médios: funcionam perfeitamente
+- ✅ Construções e blocos: preservados
+- ⚠️ Algumas entidades ou mecânicas específicas podem precisar de ajustes
+- ✅ Inventários de jogadores: preservados
 
-1. Acesse o painel web
-2. Vá na seção **"📥 Importar do Aternos"**
-3. Clique em **"Escolher arquivo"** e selecione o arquivo baixado
-4. Clique em **"📤 Importar Mundo"**
-5. Aguarde a conclusão (pode levar alguns minutos)
-6. Reinicie o servidor
+### Passos para Importar:
+
+1. Baixe seu mundo do [Aternos](https://aternos.org)
+2. Pare o servidor: `./stop.sh`
+3. Acesse o painel web
+4. Vá em "📥 Importar do Aternos"
+5. Faça upload do arquivo .zip
+6. Aguarde a importação
+7. Inicie o servidor: `./start.sh`
+
+📖 **Ver guia completo:** `ATERNOS_GUIDE.md`
 
 ## ⚙️ Configurações Rápidas
 
@@ -159,6 +176,27 @@ O painel web permite configurar facilmente:
 - Distância de renderização
 - Porta do servidor
 
+## 🔌 Plugins PocketMine-MP
+
+PocketMine-MP suporta plugins! Você pode adicionar funcionalidades extras:
+
+### Onde Encontrar Plugins:
+
+- [Poggit](https://poggit.pmmp.io/) - Repositório oficial de plugins
+
+### Como Instalar Plugins:
+
+1. Baixe o arquivo `.phar` do plugin
+2. Copie para `pocketmine-server/plugins/`
+3. Reinicie o servidor
+
+### Plugins Recomendados:
+
+- **EssentialsPE** - Comandos úteis (/home, /warp, etc.)
+- **WorldEdit** - Edição de mundo
+- **EconomyAPI** - Sistema de economia
+- **PurePerms** - Sistema de permissões
+
 ## 💬 Console e Comandos
 
 O painel possui um console integrado onde você pode:
@@ -178,13 +216,15 @@ difficulty peaceful          # Mudar dificuldade
 gamemode creative jogador    # Mudar modo de jogo
 time set day                 # Mudar hora do dia
 weather clear                # Limpar tempo
+gamerule keepInventory true  # Manter inventário
+gamerule showcoordinates true # Mostrar coordenadas
 ```
 
 ## 🔧 Solução de Problemas
 
-### ❌ Erro: "bedrock_server: No such file or directory"
+### ❌ Erro: "Servidor não encontrado"
 
-**Causa:** Servidor não foi instalado ou instalação incompleta
+**Causa:** PocketMine-MP não foi instalado
 
 **Solução:**
 ```bash
@@ -194,57 +234,7 @@ Aguarde a mensagem "Instalação concluída!"
 
 ---
 
-### ❌ Erro: "failed: No address associated with hostname"
-
-**Causa:** Problema de DNS no Termux - não consegue resolver nomes de domínio
-
-Este é o erro mais comum e pode acontecer por:
-- DNS do Termux não configurado corretamente
-- Conflito com VPN
-- Problemas com a rede WiFi atual
-
-**Solução Passo a Passo:**
-
-**1️⃣ Corrigir DNS (RECOMENDADO):**
-```bash
-./fix-dns.sh
-```
-
-**2️⃣ Trocar repositório do Termux:**
-```bash
-termux-change-repo
-```
-Escolha um mirror mais próximo (ex: Albatross, Grimler)
-
-**3️⃣ Usar download manual:**
-```bash
-./download-server.sh
-```
-Este script tem mais URLs alternativas e melhor tratamento de erros.
-
-**4️⃣ Se continuar falhando:**
-- Desconecte VPN se estiver usando
-- Troque de rede WiFi
-- Use dados móveis em vez de WiFi
-- Reinicie o Termux completamente
-
-**5️⃣ Download manual no PC (último recurso):**
-1. No PC, baixe: https://www.minecraft.net/en-us/download/server/bedrock
-2. Escolha "Linux (Ubuntu)" version
-3. Transfira o arquivo .zip para o Android
-4. No Termux:
-```bash
-mkdir -p ~/Minecraft-Server-Termux/bedrock-server
-cd ~/Minecraft-Server-Termux/bedrock-server
-unzip ~/caminho/para/bedrock-server.zip
-chmod +x bedrock_server
-```
-
----
-
 ### ❌ Erro: "Port 3000 already in use"
-
-**Causa:** Processo anterior ainda está rodando na porta 3000
 
 **Solução:**
 ```bash
@@ -253,54 +243,25 @@ sleep 3
 ./start.sh
 ```
 
-Ou manualmente:
-```bash
-pkill -f "node server.js"
-pkill -f bedrock_server
-pkill -f cloudflared
-./start.sh
-```
-
 ---
 
-### ❌ URLs públicas não aparecem
+### ❌ Servidor não inicia
 
-**Causa:** Cloudflare Tunnel ainda está conectando
+**Verificações:**
 
-**Solução 1:** Aguarde 1-2 minutos
-
-**Solução 2:** Verifique os arquivos:
+1. PHP instalado?
 ```bash
-cat web-url.txt
-cat mc-url.txt
+php -v
 ```
 
-**Solução 3:** Reinicie o túnel:
+2. PocketMine-MP baixado?
 ```bash
-pkill -f cloudflared
-./setup-tunnel.sh
+ls -la pocketmine-server/
 ```
 
----
-
-### ❌ Painel web não abre
-
-**Causa 1:** Dependências do Node.js não instaladas
-
-**Solução:**
+3. Verificar logs:
 ```bash
-cd web-panel
-npm install
-cd ..
-./start.sh
-```
-
-**Causa 2:** Porta 3000 bloqueada
-
-**Solução:**
-```bash
-./stop.sh
-./start.sh
+cat pocketmine-server/server.log
 ```
 
 ---
@@ -308,10 +269,10 @@ cd ..
 ### ❌ Não consigo conectar no Minecraft
 
 **Verificações:**
-1. ✅ Servidor está rodando? (veja logs no console)
+1. ✅ Servidor está rodando?
 2. ✅ Aguardou 2 minutos após iniciar?
-3. ✅ Porta correta? (deve ser 19132)
-4. ✅ Endereço correto? (copie do painel web)
+3. ✅ Porta correta? (19132)
+4. ✅ Versão compatível? (Bedrock 1.21.120+)
 
 **Solução:**
 ```bash
@@ -320,63 +281,30 @@ sleep 5
 ./start.sh
 ```
 
-Aguarde a mensagem com as URLs públicas.
-
 ---
 
-### ❌ Servidor fecha sozinho
+### ❌ Incompatibilidade de versão
 
-**Causa:** Memória insuficiente ou erro no servidor
+**Causa:** Seu Minecraft Bedrock está em versão diferente
 
-**Solução:** Verifique os logs:
+**Solução:** PocketMine-MP geralmente suporta múltiplas versões, mas verifique:
+
 ```bash
-cat bedrock-server/logs/latest.log
+cd pocketmine-server
+./start.sh --version
 ```
 
-Se for falta de memória:
-- Feche outros apps no Android
-- Reduza a distância de renderização no painel
-- Reduza o máximo de jogadores
-
----
-
-### ❌ Mundo não importa do Aternos
-
-**Verificações:**
-1. ✅ Arquivo é .zip ou .mcworld?
-2. ✅ Servidor está parado?
-3. ✅ Tem espaço em disco?
-
-**Solução:**
+Atualize PocketMine-MP:
 ```bash
-./stop.sh
+cd pocketmine-server
+curl -sL https://get.pmmp.io | bash -s -
 ```
-
-Depois importe pelo painel web.
-
-Verifique erros:
-```bash
-tail -f web-panel.log
-```
-
----
-
-### ❌ Game Rules não aplicam
-
-**Causa:** Servidor não está rodando
-
-**Solução:**
-Game rules só podem ser aplicadas com servidor RODANDO!
-
-1. Certifique-se que o status é "Rodando"
-2. Configure as opções
-3. Clique em "Aplicar Game Rules"
 
 ---
 
 ### 🔄 Reinstalação Limpa
 
-Se nada funcionar, reinstale tudo:
+Se nada funcionar:
 
 ```bash
 cd ~
@@ -387,42 +315,51 @@ chmod +x *.sh
 ./install.sh
 ```
 
-## 📂 Estrutura do Projeto
+## 📁 Estrutura do Projeto
 
 ```
 Minecraft-Server-Termux/
 ├── install.sh              # Script de instalação
-├── start.sh               # Inicia servidor e painel
-├── setup-tunnel.sh        # Configura túnel público
-├── bedrock-server/        # Arquivos do servidor Minecraft
-│   ├── bedrock_server     # Executável do servidor
-│   ├── server.properties  # Configurações do servidor
-│   └── worlds/            # Mundos salvos
-├── web-panel/             # Painel web
-│   ├── server.js          # Backend Node.js
-│   ├── package.json       # Dependências
-│   └── public/            # Frontend
-│       ├── index.html     # Interface
-│       ├── style.css      # Estilos
-│       └── script.js      # Lógica do cliente
-└── README.md              # Este arquivo
+├── start.sh                # Inicia servidor e painel
+├── stop.sh                 # Para todos os processos
+├── setup-tunnel.sh         # Configura túnel público
+├── help.sh                 # Ajuda rápida
+├── commands.sh             # Menu interativo
+├── pocketmine-server/      # PocketMine-MP
+│   ├── start.sh            # Iniciar PocketMine
+│   ├── PocketMine-MP.phar  # Servidor
+│   ├── server.properties   # Configurações
+│   ├── worlds/             # Mundos salvos
+│   └── plugins/            # Plugins instalados
+├── web-panel/              # Painel web
+│   ├── server.js           # Backend Node.js
+│   ├── package.json        # Dependências
+│   └── public/             # Frontend
+│       ├── index.html      # Interface
+│       ├── style.css       # Estilos
+│       └── script.js       # Lógica do cliente
+├── README.md               # Documentação completa
+├── QUICK_START.md          # Guia rápido
+└── ATERNOS_GUIDE.md        # Guia de importação
 ```
 
 ## 🔒 Segurança
 
 - O túnel Cloudflare é seguro e criptografado
-- Recomenda-se usar senha no servidor para jogadores
-- Configure whitelist em `server.properties` se necessário:
+- Configure senha no `server.properties` se desejar
+- Use whitelist para controlar acesso:
 
+```bash
+cd pocketmine-server
+nano server.properties
+```
+
+Mude:
 ```
 white-list=true
 ```
 
-Depois adicione jogadores no console:
-
-```
-whitelist add nome_do_jogador
-```
+Adicione jogadores via console do painel.
 
 ## 🌟 Recursos Adicionais
 
@@ -432,28 +369,24 @@ Baixe o mundo atual clicando em **"💾 Baixar Mundo Atual"** no painel.
 
 ### Múltiplos Mundos
 
-Você pode manter múltiplos mundos na pasta `bedrock-server/worlds/` e alternar entre eles editando `server.properties`:
+Você pode ter múltiplos mundos na pasta `pocketmine-server/worlds/` e alternar editando `server.properties`:
 
 ```
 level-name=nome_do_mundo
 ```
 
-### Mods e Add-ons
+### Adicionar Plugins
 
-Adicione packs de comportamento e recursos na pasta:
-- `bedrock-server/behavior_packs/`
-- `bedrock-server/resource_packs/`
-
-Configure-os em `server.properties`.
+1. Visite [Poggit](https://poggit.pmmp.io/)
+2. Baixe plugins `.phar`
+3. Copie para `pocketmine-server/plugins/`
+4. Reinicie o servidor
 
 ## 📱 Manter Servidor Rodando
 
 ### Usar Termux em Background
 
 Para manter o servidor rodando quando fechar o Termux:
-
-1. Instale o plugin Termux:Boot (opcional)
-2. Use `screen` ou `tmux`:
 
 ```bash
 pkg install screen
@@ -471,15 +404,21 @@ Ative o "Acquire wakelock" nas configurações do Termux para evitar que o Andro
 
 ## 🆘 Suporte
 
-Problemas ou dúvidas? Abra uma issue no GitHub!
+Problemas ou dúvidas? 
+
+- [Issues no GitHub](https://github.com/deivid22srk/Minecraft-Server-Termux/issues)
+- [Documentação PocketMine-MP](https://doc.pmmp.io/)
+- [Discord PocketMine-MP](https://discord.gg/bmSAZBG)
 
 ## 📄 Licença
 
 MIT License - Use livremente!
 
-## 🤝 Contribuições
+## 🙏 Créditos
 
-Pull requests são bem-vindos! Para mudanças grandes, abra uma issue primeiro.
+- **PocketMine-MP** - Software do servidor
+- **Cloudflare** - Túnel público gratuito
+- **Comunidade Minecraft Bedrock** ❤️
 
 ---
 

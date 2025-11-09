@@ -1,6 +1,24 @@
 # 📥 Guia Completo: Como Importar Seu Mundo do Aternos
 
-Este guia mostra passo a passo como transferir seu mundo do Aternos para seu servidor Bedrock no Termux.
+Este guia mostra passo a passo como transferir seu mundo do Aternos para seu servidor **PocketMine-MP** no Termux.
+
+## 🎯 Sobre Compatibilidade
+
+Este servidor usa **PocketMine-MP** (ARM64 nativo) em vez do servidor oficial:
+
+✅ **O que funciona:**
+- Blocos e construções
+- Inventários de jogadores
+- Cofres e itens
+- Estrutura do mundo
+- Maioria das entidades
+
+⚠️ **Possíveis limitações:**
+- Command blocks muito complexos podem precisar de ajuste
+- Algumas mecânicas específicas podem diferir
+- Mods do servidor oficial podem não funcionar
+
+💡 **Mas não se preocupe!** A grande maioria dos mundos funciona perfeitamente, e você pode usar plugins PocketMine-MP para adicionar funcionalidades extras!
 
 ## 🎯 Pré-requisitos
 
