@@ -4,7 +4,7 @@ Servidor completo de Minecraft Bedrock Edition versão 1.21+ com painel web de g
 
 ## ✨ Características
 
-- ✅ Servidor Minecraft Bedrock Edition otimizado para Termux
+- ✅ Servidor Minecraft Bedrock Edition 1.21.121.1 otimizado para Termux
 - 🌐 Painel web completo para gerenciamento
 - 🔓 Acesso público via Cloudflare Tunnel (não é localhost!)
 - 📥 Importação de mundos do Aternos
@@ -13,6 +13,8 @@ Servidor completo de Minecraft Bedrock Edition versão 1.21+ com painel web de g
 - 📊 Controle total do servidor (iniciar, parar, reiniciar)
 - 🎯 Game rules configuráveis pela interface
 - 💾 Backup e download de mundos
+- 🔄 Download de múltiplas versões do servidor
+- 🧪 Scripts de teste e diagnóstico incluídos
 
 ## 📋 Requisitos
 

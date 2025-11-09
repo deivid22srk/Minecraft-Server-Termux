@@ -29,8 +29,8 @@ echo "✅ DNS configurado"
 
 echo ""
 echo "[3/4] Testando resolução de nomes..."
-if nslookup minecraft.azureedge.net &> /dev/null; then
-    echo "✅ DNS funcionando!"
+if nslookup minecraft.net &> /dev/null; then
+    echo "✅ DNS funcionando! (minecraft.net resolvido)"
 else
     echo "⚠️  DNS ainda com problemas"
     echo ""
