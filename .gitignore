@@ -1,0 +1,10 @@
+node_modules/
+bedrock-server/
+web-panel/uploads/
+web-panel/node_modules/
+*.log
+*.txt
+cloudflared
+web-url.txt
+mc-url.txt
+tunnel-*.log
