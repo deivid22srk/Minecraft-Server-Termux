@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Bedrock Server - Painel de Controle</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>🎮 Minecraft Bedrock Server</h1>
+                <div class="server-status">
+                    <span class="status-label">Status:</span>
+                    <span id="status-indicator" class="status stopped">Parado</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <section class="card">
+                    <h2>⚙️ Controle do Servidor</h2>
+                    <div class="button-group">
+                        <button id="btn-start" class="btn btn-success">▶️ Iniciar</button>
+                        <button id="btn-stop" class="btn btn-danger" disabled>⏹️ Parar</button>
+                        <button id="btn-restart" class="btn btn-warning" disabled>🔄 Reiniciar</button>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2>🌍 Informações de Conexão</h2>
+                    <div class="connection-info">
+                        <div class="info-item">
+                            <label>IP do Servidor:</label>
+                            <div class="copy-field">
+                                <input type="text" id="server-ip" readonly value="Carregando...">
+                                <button onclick="copyToClipboard('server-ip')" class="btn-copy">📋</button>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <label>Porta:</label>
+                            <input type="text" id="server-port" readonly value="19132">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2>🎯 Configurações Rápidas</h2>
+                    <div class="quick-settings">
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="show-coordinates">
+                                <span>Mostrar Coordenadas</span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="keep-inventory">
+                                <span>Manter Inventário ao Morrer</span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="pvp">
+                                <span>PvP Ativado</span>
+                            </label>
+                        </div>
+                        <div class="setting-item">
+                            <label>
+                                <input type="checkbox" id="friendly-fire">
+                                <span>Fogo Amigo</span>
+                            </label>
+                        </div>
+                        <button id="btn-apply-gamerules" class="btn btn-primary">Aplicar Game Rules</button>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2>📥 Importar do Aternos</h2>
+                    <div class="import-section">
+                        <p class="help-text">
+                            Para importar seu mundo do Aternos:
+                            <ol>
+                                <li>Acesse seu servidor no Aternos</li>
+                                <li>Vá em "Worlds" e baixe o mundo</li>
+                                <li>Faça upload do arquivo .zip ou .mcworld aqui</li>
+                            </ol>
+                        </p>
+                        <input type="file" id="world-file" accept=".zip,.mcworld">
+                        <button id="btn-import" class="btn btn-primary">📤 Importar Mundo</button>
+                        <button id="btn-download" class="btn btn-secondary">💾 Baixar Mundo Atual</button>
+                    </div>
+                </section>
+            </div>
+
+            <div class="right-panel">
+                <section class="card">
+                    <h2>📝 Configurações do Servidor</h2>
+                    <div class="config-form" id="config-form">
+                        <div class="form-group">
+                            <label>Nome do Servidor:</label>
+                            <input type="text" id="cfg-server-name" placeholder="Meu Servidor">
+                        </div>
+                        <div class="form-group">
+                            <label>Gamemode Padrão:</label>
+                            <select id="cfg-gamemode">
+                                <option value="survival">Sobrevivência</option>
+                                <option value="creative">Criativo</option>
+                                <option value="adventure">Aventura</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Dificuldade:</label>
+                            <select id="cfg-difficulty">
+                                <option value="peaceful">Pacífico</option>
+                                <option value="easy">Fácil</option>
+                                <option value="normal">Normal</option>
+                                <option value="hard">Difícil</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Máximo de Jogadores:</label>
+                            <input type="number" id="cfg-max-players" min="1" max="100" value="10">
+                        </div>
+                        <div class="form-group">
+                            <label>Distância de Renderização:</label>
+                            <input type="number" id="cfg-view-distance" min="5" max="64" value="32">
+                        </div>
+                        <div class="form-group">
+                            <label>Porta do Servidor:</label>
+                            <input type="number" id="cfg-port" value="19132">
+                        </div>
+                        <button id="btn-save-config" class="btn btn-primary">💾 Salvar Configurações</button>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2>💬 Console</h2>
+                    <div class="console-container">
+                        <div id="console-output" class="console-output"></div>
+                        <div class="console-input">
+                            <input type="text" id="command-input" placeholder="Digite um comando...">
+                            <button id="btn-send-command" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
