@@ -9,19 +9,27 @@ echo "=========================================="
 echo ""
 
 if ! command -v cloudflared &> /dev/null; then
-    echo "[1/2] Instalando Cloudflare Tunnel..."
-    
-    ARCH=$(uname -m)
-    if [ "$ARCH" = "aarch64" ]; then
-        wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64 -O cloudflared
-    elif [ "$ARCH" = "x86_64" ]; then
-        wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O cloudflared
+    if [ -f "cloudflared" ]; then
+        echo "[1/2] Instalando Cloudflare Tunnel local..."
+        chmod +x cloudflared
+        mv cloudflared $PREFIX/bin/
     else
-        wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm -O cloudflared
+        echo "[1/2] Baixando Cloudflare Tunnel..."
+        
+        ARCH=$(uname -m)
+        if [ "$ARCH" = "aarch64" ]; then
+            wget -q --show-progress https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64 -O cloudflared
+        elif [ "$ARCH" = "x86_64" ]; then
+            wget -q --show-progress https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 -O cloudflared
+        else
+            wget -q --show-progress https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm -O cloudflared
+        fi
+        
+        chmod +x cloudflared
+        mv cloudflared $PREFIX/bin/
     fi
-    
-    chmod +x cloudflared
-    mv cloudflared $PREFIX/bin/
+else
+    echo "[1/2] Cloudflare Tunnel já instalado ✅"
 fi
 
 echo ""
